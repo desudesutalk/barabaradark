@@ -1,0 +1,6 @@
+{
+  "socksPortNumber": 9999,
+  "controlPortNumber": 9998,
+  "listenPort": 47654,
+  "uiPort": 8810
+}

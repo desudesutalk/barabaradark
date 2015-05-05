@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>BaraBaraDark</title>
+	<link href="assets/main.css" rel="stylesheet" type="text/css" />
+	<link href="assets/font-awesome.css" rel="stylesheet" type="text/css" />
+	<script language="JavaScript" type="text/javascript" src="assets/zepto.min.js"></script>
+	<script language="JavaScript" type="text/javascript" src="assets/jquery.identicon5.js"></script>	
+</head>
+<body>
+
+	<div style="text-align: center; margin: auto; position: absolute; top: 0; left: 0; bottom: 0; right: 0; height: 100px;" id="load_spalsh">
+		<h3>Starting up...</h3>
+		<i class="fa fa-refresh fa-spin fa-3x"></i><br>
+		[<a href="javascript:;" class="open_dev_tools">debug</a>]
+	</div>
+
+
+<div class="maincontent hidden">
+	
+
+	<div id="header">
+		<div style="float:left;" class="clickable" id="page_refresh">&nbsp;<i class="fa fa-refresh"></i> Refresh</div>
+		<div class="headbutton clickable" id="show_contacts"><i class="fa fa-users"></i> Contacts</div>
+		<div class="headbutton clickable" id="show_subs"><i class="fa fa-bullhorn"></i> Subscriptions</div>
+		<div class="headbutton clickable selected" id="show_messages"><i class="fa fa-comments"></i> Mesages</div>
+		
+		
+	</div>
+
+	<div id="pages">
+		<div class="page" id="contacts"><i class="fa fa-eye-slash"></i> Nothing to see here... <br>[<a href="javascript:;" class="open_dev_tools">debug</a>]</div>
+		<div class="page" id="subs">
+			<p style="text-align: center"><label>Subscribtion name: <input name="sub_address" type="text" length="90" id="sub_address" style="width: 400px;"></label><input type="button" value="Add" id="add_sub_key"></p>
+			<div id="subs_list"></div>
+		</div>
+		<div class="page show" id="messages">
+			<div id="msgs_menu"> </div>
+			<div id="msgs_content"> <h1>Добро пожаловать. Снова.</h1></div>
+
+		</div>
+		
+		
+	</div>
+
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
