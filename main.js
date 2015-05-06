@@ -14,7 +14,7 @@ var DataBase = require('./lib/dbase.js');
 var KeyStore = require('./lib/keystore.js');
 var Ui = require('./lib/ui');
 var msgcrypt = require('./lib/msgcrpyt.js');
-
+var path = require('path');
 
 
 var app = {'$': $};
@@ -42,7 +42,7 @@ app.keys = new KeyStore(app);
 
 var ds;// = new DataServer(datadir, opt.listenPort, opt);
 
-var ths = new thsBuilder(datadir, opt.socksPortNumber, opt.controlPortNumber);
+var ths = new thsBuilder(path.resolve(datadir), opt.socksPortNumber, opt.controlPortNumber);
 
 
 if(!ths.getServices() || ths.getServices().length ===0 || ths.getServices()[0].name != 'ddd_service'){
