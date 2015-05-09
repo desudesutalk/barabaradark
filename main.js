@@ -22,7 +22,7 @@ var app = {'$': $};
 var datadir = './data/';
 app.datadir = datadir;
 
-var dataFiles = fs.readdirsync(datadir);
+var dataFiles = fs.readdirSync(datadir);
 if(dataFiles.indexOf('posts.db') == -1){
 	fs.renameSync(datadir + 'posts.emptydb', datadir + 'posts.db');
 }
@@ -52,7 +52,7 @@ var ds;// = new DataServer(datadir, opt.listenPort, opt);
 
 var ths = new thsBuilder(path.resolve(datadir), opt.socksPortNumber, opt.controlPortNumber);
 
-app.keys = ths;
+app.ths = ths;
 
 if(!ths.getServices() || ths.getServices().length ===0 || ths.getServices()[0].name != 'ddd_service'){
 	ths.createHiddenService('ddd_service', '47654 ' + opt.listenPort, true);
