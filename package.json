@@ -3,21 +3,24 @@
   "main": "./index.html",
   "version": "0.0.1",
   "private": true,
+  "chromium-args": "--data-path='chrome/'",
   "scripts": {
     "start": "nw"
   },
   "dependencies": {
     "bs58": "^2.0.1",
     "dblite": "^0.7.6",
+    "download": "^4.1.2",
     "elliptic": "^3.0.3",
+    "ntp-client": "^0.5.3",
     "socks5-client": "^1.1.0",
     "ths": "^2.1.5"
   },
   "window": {
     "width": 900,
     "height": 600,
-    "min_width": 860,
-    "min_height": 580,
+    "min_width": 600,
+    "min_height": 400,
     "toolbar": false
   }
 }

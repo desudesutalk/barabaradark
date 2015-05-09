@@ -22,6 +22,14 @@ var app = {'$': $};
 var datadir = './data/';
 app.datadir = datadir;
 
+var dataFiles = fs.readdirsync(datadir);
+if(dataFiles.indexOf('posts.db') == -1){
+	fs.renameSync(datadir + 'posts.emptydb', datadir + 'posts.db');
+}
+if(dataFiles.indexOf('peerlist.json') == -1){
+	fs.renameSync(datadir + 'bootstrap.json', datadir + 'peerlist.json');
+}
+
 var opt;
 try { 
 	opt = JSON.parse(fs.readFileSync(datadir + 'options.json', 'utf8'));
@@ -44,6 +52,7 @@ var ds;// = new DataServer(datadir, opt.listenPort, opt);
 
 var ths = new thsBuilder(path.resolve(datadir), opt.socksPortNumber, opt.controlPortNumber);
 
+app.keys = ths;
 
 if(!ths.getServices() || ths.getServices().length ===0 || ths.getServices()[0].name != 'ddd_service'){
 	ths.createHiddenService('ddd_service', '47654 ' + opt.listenPort, true);
