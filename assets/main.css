@@ -50,6 +50,16 @@ div#header {
     overflow: hidden;
     padding-right: 10px;
     box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #EEEEEE;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+div#pages {
+  margin-top: 25px;
 }
 
 div.headbutton {

@@ -38,7 +38,8 @@ try {
 		socksPortNumber: 9999,
 		controlPortNumber: 9998,
 		listenPort: 47654,
-		uiPort: 8810
+		disableNetworking: false,
+		powThreads: 2
 	};
 	fs.writeFile(datadir + 'options.json', JSON.stringify(opt, null, 2));
 }
@@ -48,7 +49,7 @@ app.opt = opt;
 app.db = new DataBase(datadir);
 app.keys = new KeyStore(app);
 
-var ds;// = new DataServer(datadir, opt.listenPort, opt);
+var ds = false;
 
 var ths = new thsBuilder(path.resolve(datadir), opt.socksPortNumber, opt.controlPortNumber);
 
@@ -60,84 +61,98 @@ if(!ths.getServices() || ths.getServices().length ===0 || ths.getServices()[0].n
 	console.log(ths.getServices());
 }
 
-ths.start(false, function(){
-	console.log(ths.getServices());	
-	ths.getOnionAddress('ddd_service', function(err, hostname){
-		ds = new DataServer(datadir, hostname, opt);
-		app.ds = ds;
+if(!opt.disableNetworking){
+	ths.start(false, function(){
+		console.log(ths.getServices());	
+		ths.getOnionAddress('ddd_service', function(err, hostname){
+			ds = new DataServer(datadir, hostname, opt);
+			app.ds = ds;
 
 
-		ds.dataStore.on('fileadded', function(fname){
-			var content = ds.dataStore.getFile(fname);
+			ds.dataStore.on('fileadded', function(fname){
+				var content = ds.dataStore.getFile(fname);
 
-			content = content.slice(10);
-			var msgHash = crpt.createHash('sha256').update(content).digest('hex');
+				content = content.slice(10);
+				var msgHash = crpt.createHash('sha256').update(content).digest('hex');
 
-			for(k in app.keys.subs){
-				var sk = ec.keyPair({priv: bs58.decode(app.keys.subs[k].private)});
-				console.log(sk);
-				var decMSG = msgcrypt.decodeMessage(content, sk);
-				if(!decMSG) continue;
-				console.log(decMSG, msgHash);
+				for(k in app.keys.subs){
+					var sk = ec.keyPair({priv: bs58.decode(app.keys.subs[k].private)});
+					console.log(sk);
+					var decMSG = msgcrypt.decodeMessage(content, sk);
+					if(!decMSG) continue;
+					console.log(decMSG, msgHash);
 
-				if(decMSG.msg.parent != 0){
+					if(decMSG.msg.parent != 0){
+						app.db.addPost({
+							id: decMSG.msg.parent,
+							parent: 0,
+							posted_at: 0,
+							bumped: decMSG.msg.timestamp,
+							message: '',
+							sent_to: k,
+							state: 'placeholder'
+						}, function(){
+							app.db.bumpThread(decMSG.msg.parent, decMSG.msg.timestamp);
+						});
+					}
+
 					app.db.addPost({
-						id: decMSG.msg.parent,
-						parent: 0,
-						posted_at: 0,
-						bumped: decMSG.msg.timestamp,
-						message: '',
-						sent_to: k,
-						state: 'placeholder'
-					}, function(){
-						app.db.bumpThread(decMSG.msg.parent, decMSG.msg.timestamp);
-					});
+							id: msgHash,
+							parent: decMSG.msg.parent,
+							posted_at: decMSG.msg.timestamp,
+							bumped: decMSG.msg.timestamp,
+							message: decMSG.msg.text,
+							sent_to: k,
+							state: 'recieved'
+						}, function(){});
+					app.db.updatePost({
+							id: msgHash,
+							parent: decMSG.msg.parent,
+							posted_at: decMSG.msg.timestamp,
+							bumped: decMSG.msg.timestamp,
+							message: decMSG.msg.text,
+							sent_to: k,
+							state: 'recieved'
+						}, function(){});
+					fs.unlink(app.datadir + '/temp_msg/' + msgHash, function(){return true;});
+					break;
 				}
-
-				app.db.addPost({
-						id: msgHash,
-						parent: decMSG.msg.parent,
-						posted_at: decMSG.msg.timestamp,
-						bumped: decMSG.msg.timestamp,
-						message: decMSG.msg.text,
-						sent_to: k,
-						state: 'recieved'
-					}, function(){});
-				app.db.updatePost({
-						id: msgHash,
-						parent: decMSG.msg.parent,
-						posted_at: decMSG.msg.timestamp,
-						bumped: decMSG.msg.timestamp,
-						message: decMSG.msg.text,
-						sent_to: k,
-						state: 'recieved'
-					}, function(){});
-				fs.unlink(app.datadir + '/temp_msg/' + msgHash, function(){return true;});
-				break;
-			}
+			});
+			
+			app.ui = new Ui(app);
+			setTimeout(app.ui.inject.bind(app.ui), 1000);
 		});
-		
-		app.ui = new Ui(app);
-		setTimeout(app.ui.inject.bind(app.ui), 1000);
-	});
 
+	});
+}else{
+	app.ui = new Ui(app);
+	setTimeout(app.ui.inject.bind(app.ui), 0);
+}
+
+$('.update_bbd').on('click', function(){
+	$('.update_bbd').replaceWith('<div class="update_bbd">Downloading... <i class="fa fa-refresh fa-spin"></i></div>');
+
+	app.ths.stop();
+	if(ds) ds.server.close();
+	var Download = require('download');
+
+	new Download({mode: '755', extract: true, strip: 1})
+	    .get('https://github.com/desudesutalk/barabaradark/archive/master.zip')
+	    .dest('.')
+	    .run(function(){
+			var child,
+            	child_process = require("child_process"),
+            	gui = require('nw.gui'),
+            	win = gui.Window.get();
+            if (process.platform == "darwin")  {
+            	child = child_process.spawn("open", ["-n", "-a", process.execPath.match(/^([^\0]+?\.app)\//)[1]], {detached:true});
+           	} else {
+            	child = child_process.spawn(process.execPath, [], {detached: true, cwd: process.cwd()});
+           	}
+            child.unref();
+            win.hide();
+            gui.App.quit();	    	
+	    });	
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+console.log(process.execPath);
