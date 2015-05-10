@@ -1,3 +1,5 @@
+"use strict";
+
 var win = require('nw.gui');
 $('.open_dev_tools').on('click', function(){
 	win.Window.get().showDevTools();
@@ -70,7 +72,7 @@ if(!opt.disableNetworking){
 
 
 			ds.dataStore.on('fileadded', function(fname){
-				var content = ds.dataStore.getFile(fname);
+				var content = ds.dataStore.getFile(fname), k;
 
 				content = content.slice(10);
 				var msgHash = crpt.createHash('sha256').update(content).digest('hex');
@@ -82,7 +84,7 @@ if(!opt.disableNetworking){
 					if(!decMSG) continue;
 					console.log(decMSG, msgHash);
 
-					if(decMSG.msg.parent != 0){
+					if(decMSG.msg.parent !== 0){
 						app.db.addPost({
 							id: decMSG.msg.parent,
 							parent: 0,
@@ -154,5 +156,3 @@ $('.update_bbd').on('click', function(){
             gui.App.quit();	    	
 	    });	
 });
-
-console.log(process.execPath);
