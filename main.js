@@ -28,7 +28,7 @@ app.keys = new KeyStore(app);
 
 var ds = false;
 
-var ths = new thsBuilder(opt.datadir, opt.get('socksPortNumber'), opt.get('controlPortNumber'));
+var ths = new thsBuilder(opt.datadir, opt.get('socksPortNumber'), opt.get('controlPortNumber'), function(err){console.error('Tor error: ' + err);});
 
 app.ths = ths;
 
