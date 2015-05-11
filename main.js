@@ -33,7 +33,7 @@ var ths = new thsBuilder(opt.datadir, opt.get('socksPortNumber'), opt.get('contr
 app.ths = ths;
 
 if(!ths.getServices() || ths.getServices().length ===0 || ths.getServices()[0].name != 'ddd_service'){
-	ths.createHiddenService('ddd_service', '47654 ' + opt.listenPort, true);
+	ths.createHiddenService('ddd_service', '47654 ' + opt.get('listenPort'), true);
 	console.log('service created');
 	console.log(ths.getServices());
 }
