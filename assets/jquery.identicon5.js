@@ -479,4 +479,4 @@ Usage with options: $('li').identicon5({rotate:true, size:100});
             }			
         });
     };
-})(Zepto); 
+})($); 

@@ -173,3 +173,99 @@ pre {
 .hidbord_spoiler:not(:hover), .hidbord_spoiler:not(:hover) * { color: #CCCCCC !important; }
 .hidbord_quot1 { color: #789922; }
 .hidbord_quot2 { color: #546c18; }
+
+.nfavbar-inverse {
+  background-image: none;
+  background-color: #222;
+    border-color: #080808;
+}
+
+#page-wrapper{
+  position: fixed;
+  right: 0;
+  top: 50px;
+  bottom:0;
+  left: 250px;
+  overflow: auto; 
+}
+
+#side-nav{
+  position: fixed;
+  left: 0;
+  top: 50px;
+  bottom:0;
+  width: 250px;
+  overflow: auto; 
+}
+
+.navbar-right{
+  margin-right: 0 !important;
+}
+
+    .side-nav {
+        position: fixed;
+        top: 51px;
+        left: 225px;
+        width: 225px;
+        margin-left: -225px;
+        border: none;
+        border-radius: 0;
+        overflow-y: auto;
+        background-color: #222;
+        bottom: 0;
+        overflow-x: hidden;
+        padding-bottom: 40px;
+    }
+
+    .side-nav li>a {
+        width: 225px;
+    }
+
+    .side-nav li a:hover,
+    .side-nav li a:focus {
+        outline: none;
+        background-color: #000 !important;
+    }
+
+.side-nav li>ul {
+    padding: 0;
+}
+
+.side-nav li>ul>li>a {
+    display: block;
+    padding: 10px 15px 10px 38px;
+    text-decoration: none;
+    color: #999;
+}
+
+.side-nav li>ul>li>a:hover {
+    color: #fff;
+}
+
+.reply {
+  margin-left: 50px;
+  margin-right: 50px;
+  display: inline-block;
+  min-width: 500px;
+}
+
+.op { 
+  display: inline-block;
+  min-width: 500px;
+  margin-right: 50px;
+}
+
+.panel{
+  margin-bottom: 5px;
+}
+.panel-body {
+    background-color: #fafafa;
+    
+}
+
+.shorten-post .panel-body {
+  max-height: 250px;
+  overflow: auto;
+}
+
+.temp_msg:not(:hover) { opacity: 0.4;}

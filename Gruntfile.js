@@ -9,7 +9,11 @@ module.exports = function(grunt) {
                 strict: true,
                 node: true,
                 devel: true,
-                browser: true
+                browser: true,
+                globals: {
+                    "$": true,
+                    "Promise": true
+                }
             }
         }
     });

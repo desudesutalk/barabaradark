@@ -1,56 +1,66 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>BaraBaraDark</title>
-	<link href="assets/main.css" rel="stylesheet" type="text/css" />
-	<link href="assets/font-awesome.css" rel="stylesheet" type="text/css" />
-	<script language="JavaScript" type="text/javascript" src="assets/zepto.min.js"></script>
-	<script language="JavaScript" type="text/javascript" src="assets/jquery.identicon5.js"></script>	
+    <link href="assets/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="assets/main.css" rel="stylesheet" type="text/css" />
+    <link href="assets/font-awesome.css" rel="stylesheet" type="text/css" />
+    <script language="JavaScript" type="text/javascript" src="assets/jquery-2.1.4.js"></script>
+    <script language="JavaScript" type="text/javascript" src="assets/jquery.identicon5.js"></script>
+    <script language="JavaScript" type="text/javascript" src="assets/bootstrap.js"></script>
 </head>
+
 <body>
+    <div style="text-align: center; margin: auto; position: absolute; top: 0; left: 0; bottom: 0; right: 0; height: 100px;" id="load_spalsh">
+        <h3>Starting up...</h3>
+        <i class="fa fa-refresh fa-spin fa-3x"></i>
+        <br> [
+        <a href="javascript:;" class="open_dev_tools">debug</a>]
+    </div>
+    <div id="wrapper" class="hidden">
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" style="-webkit-app-region: drag; -webkit-user-select: none;">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <p class="navbar-text" style="width: 195px;   text-align: center;"><b>BaraBaraDark</b></p>
+            <ul class="nav navbar-nav navbar-left" style="-webkit-app-region: no-drag;">
+                <li class="active"><a href="#" id="show_messages">Messages</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" style="-webkit-app-region: no-drag;">
+                <li><a href="#" id="show_subs"><span class="glyphicon glyphicon-bullhorn"></span></a></li>
+                <!--li><a href="#"><span class="glyphicon glyphicon-th-list"></span></a></li-->
+                <li><a href="#" id="show_contacts"><span class="glyphicon glyphicon-cog"></span></a></li>
+            </ul>
+            <div class="side-nav">
+                <ul class="nav navbar-nav">
+                    
+                </ul>
+            </div>
+        </nav>
+        <div id="page-wrapper">
 
-	<div style="text-align: center; margin: auto; position: absolute; top: 0; left: 0; bottom: 0; right: 0; height: 100px;" id="load_spalsh">
-		<h3>Starting up...</h3>
-		<i class="fa fa-refresh fa-spin fa-3x"></i><br>
-		[<a href="javascript:;" class="open_dev_tools">debug</a>]
-	</div>
-
-
-<div class="maincontent hidden">
-	
-
-	<div id="header">
-		<div style="float:left;" class="clickable" id="page_refresh">&nbsp;<i class="fa fa-refresh"></i> Refresh</div>
-		<div class="headbutton clickable" id="show_contacts"><i class="fa fa-users"></i> Contacts</div>
-		<div class="headbutton clickable" id="show_subs"><i class="fa fa-bullhorn"></i> Subscriptions</div>
-		<div class="headbutton clickable selected" id="show_messages"><i class="fa fa-comments"></i> Mesages</div>
-		
-		
-	</div>
-
-	<div id="pages">
 		<div class="page" id="contacts"><i class="fa fa-eye-slash"></i> Nothing to see here... <br>
-		[<a href="javascript:;" class="open_dev_tools">debug</a>]<br>
-		<hr>		
-		<a href="javascript:;" class="update_bbd">Force update BarBaraDark</a><br>
-		<p>This will download latest BBD version from github</p>
+			[<a href="javascript:;" class="open_dev_tools">debug</a>]<br>
+			<hr>		
+			<a href="javascript:;" class="update_bbd">Force update BarBaraDark</a><br>
+			<p>This will download latest BBD version from github</p>
 		</div>
 		<div class="page" id="subs">
+		    <h1 class="page-header">List of subscriptions</h1>
 			<p style="text-align: center"><label>Subscribtion name: <input name="sub_address" type="text" length="90" id="sub_address" style="width: 400px;"></label><input type="button" value="Add" id="add_sub_key"></p>
 			<div id="subs_list"></div>
 		</div>
-		<div class="page show" id="messages">
-			<div id="msgs_menu"> </div>
-			<div id="msgs_content"> <h1>Добро пожаловать. Снова.</h1></div>
 
-		</div>
-		
-		
-	</div>
 
-</div>
-
-<script src="main.js"></script>
+          <div class="page show" id="messages">
+          <h1 class="page-header">Добро пожаловать. <small>Снова.</small></h1>
+           
+          </div> <!-- end of messages -->
+        </div>
+    </div>
+   
+    <script src="main.js"></script>
 </body>
+
 </html>

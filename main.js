@@ -5,6 +5,8 @@ $('.open_dev_tools').on('click', function(){
 	win.Window.get().showDevTools();
 });
 
+var opt  = require('./lib/options.js');
+
 var thsBuilder = require('ths');
 var fs = require('fs'); 
 var DataServer = require('./lib/dataserver');
@@ -18,42 +20,15 @@ var Ui = require('./lib/ui');
 var msgcrypt = require('./lib/msgcrpyt.js');
 var path = require('path');
 
-
+/*global $:false */
 var app = {'$': $};
 
-var datadir = './data/';
-app.datadir = datadir;
-
-var dataFiles = fs.readdirSync(datadir);
-if(dataFiles.indexOf('posts.db') == -1){
-	fs.renameSync(datadir + 'posts.emptydb', datadir + 'posts.db');
-}
-if(dataFiles.indexOf('peerlist.json') == -1){
-	fs.renameSync(datadir + 'bootstrap.json', datadir + 'peerlist.json');
-}
-
-var opt;
-try { 
-	opt = JSON.parse(fs.readFileSync(datadir + 'options.json', 'utf8'));
-}catch(e){
-	opt ={
-		socksPortNumber: 9999,
-		controlPortNumber: 9998,
-		listenPort: 47654,
-		disableNetworking: false,
-		powThreads: 2
-	};
-	fs.writeFile(datadir + 'options.json', JSON.stringify(opt, null, 2));
-}
-
-app.opt = opt;
-
-app.db = new DataBase(datadir);
+app.db = new DataBase();
 app.keys = new KeyStore(app);
 
 var ds = false;
 
-var ths = new thsBuilder(path.resolve(datadir), opt.socksPortNumber, opt.controlPortNumber);
+var ths = new thsBuilder(opt.datadir, opt.get('socksPortNumber'), opt.get('controlPortNumber'));
 
 app.ths = ths;
 
@@ -63,16 +38,16 @@ if(!ths.getServices() || ths.getServices().length ===0 || ths.getServices()[0].n
 	console.log(ths.getServices());
 }
 
-if(!opt.disableNetworking){
+if(!opt.get('disableNetworking')){
 	ths.start(false, function(){
 		console.log(ths.getServices());	
 		ths.getOnionAddress('ddd_service', function(err, hostname){
-			ds = new DataServer(datadir, hostname, opt);
+			ds = new DataServer(hostname);
 			app.ds = ds;
 
 
 			ds.dataStore.on('fileadded', function(fname){
-				var content = ds.dataStore.getFile(fname), k;
+				var content = ds.dataStore.getFile(fname), k, decMSG;
 
 				content = content.slice(10);
 				var msgHash = crpt.createHash('sha256').update(content).digest('hex');
@@ -80,10 +55,13 @@ if(!opt.disableNetworking){
 				for(k in app.keys.subs){
 					var sk = ec.keyPair({priv: bs58.decode(app.keys.subs[k].private)});
 					console.log(sk);
-					var decMSG = msgcrypt.decodeMessage(content, sk);
+					decMSG = msgcrypt.decodeMessage(content, sk);
 					if(!decMSG) continue;
 					console.log(decMSG, msgHash);
+					break;
+				}
 
+				if(decMSG){
 					if(decMSG.msg.parent !== 0){
 						app.db.addPost({
 							id: decMSG.msg.parent,
@@ -116,8 +94,8 @@ if(!opt.disableNetworking){
 							sent_to: k,
 							state: 'recieved'
 						}, function(){});
-					fs.unlink(app.datadir + '/temp_msg/' + msgHash, function(){return true;});
-					break;
+					fs.unlink(opt.datadir + '/temp_msg/' + msgHash, function(){return true;});
+					
 				}
 			});
 			
