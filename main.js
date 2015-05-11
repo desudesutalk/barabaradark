@@ -46,6 +46,20 @@ if(!opt.get('disableNetworking')){
 			$('#ths-address').text(hostname);
 			app.ds = ds;
 
+			app.db.getSendQueue().then(function(val){
+				function reinseretFile(err, data) {
+					if (err){
+						console.log(err); 
+						return false;
+					}
+					app.ds.insertFile(data);
+				}
+
+				for (var i = 0; i < val.length; i++) {
+					fs.readFile(opt.datadir + '/temp_msg/' + val[i].id, reinseretFile);
+				}
+			}, function(err){console.log(err);});
+
 
 			ds.dataStore.on('fileadded', function(fname){
 				var content = ds.dataStore.getFile(fname), k, decMSG;
