@@ -43,6 +43,7 @@ if(!opt.get('disableNetworking')){
 		console.log(ths.getServices());	
 		ths.getOnionAddress('ddd_service', function(err, hostname){
 			ds = new DataServer(hostname);
+			$('#ths-address').text(hostname);
 			app.ds = ds;
 
 
