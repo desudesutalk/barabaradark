@@ -96,6 +96,7 @@ if(!opt.get('disableNetworking')){
 
 					if(decMSG.hasAttach){
 						fs.writeFileSync(opt.datadir + '/files/' + msgHash, decMSG.attach);
+						decMSG.msg.fileIsImage = !!decMSG.msg.filename.match(/(gif|png|jpe?g)$/i);
 					}
 
 					var postData = {
