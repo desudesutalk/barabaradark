@@ -275,3 +275,7 @@ pre {
   max-width: 100px; 
   max-height:100px; 
 }
+
+.hidbord_msg_new {
+  background-color: #ffe;
+}

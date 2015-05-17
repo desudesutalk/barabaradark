@@ -112,9 +112,10 @@ if(!opt.get('disableNetworking')){
 						file_ext: decMSG.hasAttach ? (decMSG.msg.fileIsImage? 'image': 'file') : 'none'
 					};
 
-					app.db.addPost(postData, function(){});
+					app.db.addPost(postData, function(){app.ui.postReceived(msgHash);});
 					app.db.updatePost(postData, function(){});
 					fs.unlink(opt.datadir + '/temp_msg/' + msgHash, function(){return true;});
+					
 					
 				}
 			});
