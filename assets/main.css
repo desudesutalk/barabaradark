@@ -270,3 +270,8 @@ pre {
 
 .temp_msg:not(:hover) { opacity: 0.4;}
 .hidbord_clickable { cursor: pointer; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: -moz-none; -ms-user-select: none; user-select: none; }
+
+.img_thumb_size {
+  max-width: 100px; 
+  max-height:100px; 
+}

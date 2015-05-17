@@ -85,30 +85,34 @@ if(!opt.get('disableNetworking')){
 							bumped: decMSG.msg.timestamp,
 							message: '',
 							sent_to: k,
-							state: 'placeholder'
+							state: 'placeholder',
+							file: '',
+							file_size: 0,
+							file_ext: 'none'
 						}, function(){
 							app.db.bumpThread(decMSG.msg.parent, decMSG.msg.timestamp);
 						});
 					}
 
-					app.db.addPost({
-							id: msgHash,
-							parent: decMSG.msg.parent,
-							posted_at: decMSG.msg.timestamp,
-							bumped: decMSG.msg.timestamp,
-							message: decMSG.msg.text,
-							sent_to: k,
-							state: 'recieved'
-						}, function(){});
-					app.db.updatePost({
-							id: msgHash,
-							parent: decMSG.msg.parent,
-							posted_at: decMSG.msg.timestamp,
-							bumped: decMSG.msg.timestamp,
-							message: decMSG.msg.text,
-							sent_to: k,
-							state: 'recieved'
-						}, function(){});
+					if(decMSG.hasAttach){
+						fs.writeFileSync(opt.datadir + '/files/' + msgHash, decMSG.attach);
+					}
+
+					var postData = {
+						id: msgHash,
+						parent: decMSG.msg.parent,
+						posted_at: decMSG.msg.timestamp,
+						bumped: decMSG.msg.timestamp,
+						message: decMSG.msg.text,
+						sent_to: k,
+						state: 'recieved',
+						file: decMSG.hasAttach ? decMSG.msg.filename : '',
+						file_size: decMSG.hasAttach ? decMSG.attach.length : 0,
+						file_ext: decMSG.hasAttach ? (decMSG.msg.fileIsImage? 'image': 'file') : 'none'
+					};
+
+					app.db.addPost(postData, function(){});
+					app.db.updatePost(postData, function(){});
 					fs.unlink(opt.datadir + '/temp_msg/' + msgHash, function(){return true;});
 					
 				}
