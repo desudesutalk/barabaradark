@@ -272,8 +272,8 @@ pre {
 .hidbord_clickable { cursor: pointer; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: -moz-none; -ms-user-select: none; user-select: none; }
 
 .img_thumb_size {
-  max-width: 100px; 
-  max-height:100px; 
+  max-width: 200px; 
+  max-height: 200px; 
 }
 
 .hidbord_msg_new {
