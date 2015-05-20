@@ -77,7 +77,7 @@ if(!opt.get('disableNetworking')){
 				}
 
 				if(decMSG){
-					if(decMSG.msg.parent !== 0){
+					if(decMSG.msg.parent != '0'){
 						app.db.addPost({
 							id: decMSG.msg.parent,
 							parent: 0,
